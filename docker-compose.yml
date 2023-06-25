@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    ports:
+     - "3000:3000"
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_NAME: ${DB_NAME}
+      DB_SSLMODE: ${DB_SSLMODE}
+    depends_on:
+    - db
+  db:
+    image: "postgres:14"
+    environment:
+        POSTGRES_USER: ${DB_USER}
+        POSTGRES_PASSWORD: ${DB_PASS}
+        POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+    - db-data:/var/lib/postgresql/data
+volumes:
+  db-data:
